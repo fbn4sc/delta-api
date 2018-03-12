@@ -13,6 +13,12 @@ app.get("/team-projects", (req, res) => {
   });
 });
 
+app.get("/repositories", (req, res) => {
+  vstsClient.getAllRepositories().then(data => {
+    res.send(data);
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });

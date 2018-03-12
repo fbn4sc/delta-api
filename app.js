@@ -19,6 +19,12 @@ app.get("/repositories", (req, res) => {
   });
 });
 
+app.get("/commits", (req, res) => {
+  vstsClient.getAllCommits().then(data => {
+    res.send(data);
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });

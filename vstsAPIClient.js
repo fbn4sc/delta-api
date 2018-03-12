@@ -19,9 +19,9 @@ const getAllTeamProjects = () => {
 
 const getAllRepositories = async () => {
   const teamProjectIds = await getAllTeamProjects().then(teamProjects => {
-    const teamProjectIds = teamProjects.map(tp => tp.id);
+    const ids = teamProjects.map(tp => tp.id);
 
-    return teamProjectIds;
+    return ids;
   });
 
   let allRepositories = [];
@@ -38,7 +38,18 @@ const getAllRepositories = async () => {
   return allRepositories;
 };
 
+const getAllCommits = async () => {
+  const repositoryIds = await getAllRepositories().then(repositories => {
+    const ids = repositories.map(repo => repo.id);
+
+    return ids;
+  });
+
+  return repositoryIds;
+};
+
 module.exports = {
   getAllTeamProjects,
-  getAllRepositories
+  getAllRepositories,
+  getAllCommits
 };

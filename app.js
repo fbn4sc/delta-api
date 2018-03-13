@@ -36,6 +36,8 @@ app.get("/update-commits", async (req, res) => {
     commit =>
       new Commits({
         _id: commit.commitId,
+        comment: commit.comment,
+        commitDate: commit.author.date,
         author: { name: commit.author.name, email: commit.author.email },
         changeCounts: {
           add: commit.changeCounts.Add,

@@ -57,7 +57,9 @@ app.get("/update-commits", async (req, res) => {
 });
 
 app.get("/commits", (req, res) => {
-  Commits.find({}, (err, results) => {
+  const email = new RegExp(`.*${req.query.email}.*`, "i");
+
+  Commits.find({ "author.email": { $regex: email } }, (err, results) => {
     if (err) res.status(500).send("Something went wrong.");
     res.send(results);
   });

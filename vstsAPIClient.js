@@ -45,7 +45,21 @@ const getAllCommits = async () => {
     return ids;
   });
 
-  return repositoryIds;
+  let allCommits = [];
+
+  await Promise.all(
+    repositoryIds.map(id =>
+      ax
+        .get(`/_apis/git/repositories/${id}/commits?$top=9999999`)
+        .then(res => {
+          const commits = res.data.value;
+          allCommits = allCommits.concat(commits);
+        })
+        .catch(error => console.log(error))
+    )
+  );
+
+  return allCommits;
 };
 
 module.exports = {

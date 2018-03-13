@@ -53,7 +53,7 @@ app.get("/commits", async (req, res) => {
     .bulkWrite(updateOperations)
     .then(result => result);
 
-  res.send(`${result.nUpserted}`);
+  res.send(`Done saving ${result.nUpserted} new commits.`);
 });
 
 app.timeout = 600000;

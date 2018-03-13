@@ -29,7 +29,7 @@ app.get("/repositories", (req, res) => {
   });
 });
 
-app.get("/commits", async (req, res) => {
+app.get("/update-commits", async (req, res) => {
   const commits = await vstsClient.getAllCommits().then(data => data);
 
   const newCommits = commits.map(
@@ -54,6 +54,13 @@ app.get("/commits", async (req, res) => {
     .then(result => result);
 
   res.send(`Done saving ${result.nUpserted} new commits.`);
+});
+
+app.get("/commits", (req, res) => {
+  Commits.find({}, (err, results) => {
+    if (err) res.status(500).send("Something went wrong.");
+    res.send(results);
+  });
 });
 
 app.timeout = 600000;

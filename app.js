@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 3000;
 const vstsClient = require("./vstsAPIClient");
+const _ = require("lodash");
 
 const mongoose = require("mongoose");
 mongoose.connect(process.env.mongoConnectionString);
@@ -72,6 +73,17 @@ app.get("/commits", (req, res) => {
     if (err) res.status(500).send("Something went wrong.");
     res.send(results);
   });
+});
+
+app.get("/developers", async (req, res) => {
+  let developers = await Commits.aggregate(
+    [{ $group: { _id: { name: "$author.name", email: "$author.email" } } }],
+    (err, results) => results
+  );
+  developers = developers.map(dev => dev._id);
+  developers = _.orderBy(developers, ["name", "email"]);
+
+  res.send(developers);
 });
 
 app.timeout = 600000;

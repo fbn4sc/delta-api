@@ -59,9 +59,13 @@ app.get("/update-commits", async (req, res) => {
 });
 
 app.get("/commits", (req, res) => {
-  const email = new RegExp(`.*${req.query.email}.*`, "i");
+  const email = req.query.email;
+  if (!email) return res.status(400).send("Email is required.");
 
-  Commits.find({ "author.email": { $regex: email } }, (err, results) => {
+  const escapedEmail = email.replace(/[|\\{}()[\]^$+*?.]/g, "\\$&");
+  const emailRegex = new RegExp(`.*${escapedEmail}.*`, "i");
+
+  Commits.find({ "author.email": { $regex: emailRegex } }, (err, results) => {
     if (err) res.status(500).send("Something went wrong.");
     res.send(results);
   });

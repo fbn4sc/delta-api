@@ -7,11 +7,14 @@ const mongoose = require("mongoose");
 mongoose.connect(process.env.mongoConnectionString);
 const db = mongoose.connection;
 const Commits = require("./models").Commits;
+const cors = require("cors");
 
 db.on("error", console.error.bind(console, "connection error"));
 db.once("open", () => {
   console.log("Connected to the db");
 });
+
+app.use(cors());
 
 app.get("/", (req, res) => {
   res.send("Delta API.");
